@@ -16,6 +16,17 @@ function pushToChat(message: string){
     UrlFetchApp.fetch(url, options)
 }
 
-function sheetOnEdit(e){
-    
+function sheetOnEdit(e: GoogleAppsScript.Events.SheetsOnEdit){
+    const ss = SpreadsheetApp.getActiveSpreadsheet();
+    const sheet = ss.getActiveSheet();
+    const cell = sheet.getActiveCell();
+    // const col = cell.getColumn();
+    const row = cell.getRow();
+    const editedValue = cell.getValue();
+    if(sheet.getName() !== "Google chat webhook") return;
+
+    if(editedValue === "開発開始"){
+        const message = `${row}行目のステータスが【開発開始】になりました。\n詳細：${cell.offset(0, 1).getValue()}`
+        pushToChat(message);
+    }
 }
