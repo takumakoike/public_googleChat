@@ -30,3 +30,16 @@ function sheetOnEdit(e: GoogleAppsScript.Events.SheetsOnEdit){
         pushToChat(message);
     }
 }
+
+function statusList(): string[]{
+    const ss = SpreadsheetApp.getActiveSpreadsheet();
+    const sheet = ss.getSheetByName("date");
+    const lastRow = sheet?.getRange(1,1).getNextDataCell(SpreadsheetApp.Direction.DOWN).getRow();
+    if(!lastRow || lastRow < 2) return [];
+    
+    const lists = sheet?.getRange(2,1,lastRow-1,1).getValues();
+    if(!lists || lists.length === 0) return [];
+    // console.log(lists);
+    // console.log(lists.flat())
+    return lists.flat()
+}
